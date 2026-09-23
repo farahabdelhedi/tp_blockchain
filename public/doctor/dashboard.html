@@ -18,6 +18,54 @@
 
 <div class="container">
   <div class="card">
+    <div class="section-header">
+      <h2>Mon profil</h2>
+      <div class="profile-actions">
+        <button id="editDoctorProfileButton" type="button" class="btn btn-secondary btn-small">Modifier</button>
+      </div>
+    </div>
+    <div id="doctorProfileSummary" class="profile-summary">
+      <p><strong>Nom complet:</strong> <span id="doctorSummaryName">Chargement...</span></p>
+      <p><strong>Email:</strong> <span id="doctorSummaryEmail">-</span></p>
+      <p><strong>Spécialité:</strong> <span id="doctorSummarySpecialty">-</span></p>
+      <p><strong>Téléphone:</strong> <span id="doctorSummaryPhone">-</span></p>
+    </div>
+    <form id="doctorProfileForm" class="profile-form hidden">
+      <div class="grid-2">
+        <div>
+          <label for="doctorProfileName">Nom complet</label>
+          <input id="doctorProfileName" type="text" required>
+        </div>
+        <div>
+          <label for="doctorProfileEmail">Email</label>
+          <input id="doctorProfileEmail" type="email" required>
+        </div>
+        <div>
+          <label for="doctorProfileSpecialty">Spécialité</label>
+          <input id="doctorProfileSpecialty" type="text">
+        </div>
+        <div>
+          <label for="doctorProfilePhone">Téléphone</label>
+          <input id="doctorProfilePhone" type="tel">
+        </div>
+      </div>
+      <h3>Changer le mot de passe <span class="optional-label">(facultatif)</span></h3>
+      <label for="doctorCurrentPassword">Mot de passe actuel</label>
+      <input id="doctorCurrentPassword" type="password" autocomplete="current-password">
+      <label for="doctorNewPassword">Nouveau mot de passe</label>
+      <input id="doctorNewPassword" type="password" minlength="6" autocomplete="new-password">
+      <label for="doctorConfirmPassword">Confirmer le nouveau mot de passe</label>
+      <input id="doctorConfirmPassword" type="password" minlength="6" autocomplete="new-password">
+      <p id="doctorProfileMessage" class="success-msg" role="status"></p>
+      <p id="doctorProfileError" class="error-msg" role="alert"></p>
+      <div class="form-actions">
+        <button type="submit" class="btn">Enregistrer mes informations</button>
+        <button id="cancelDoctorProfileButton" type="button" class="btn btn-secondary">Annuler</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card">
     <h2>Mes patients</h2>
     <table id="patientsTable">
       <thead>

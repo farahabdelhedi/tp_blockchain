@@ -2,9 +2,86 @@
 const express = require('express');
 const db = require('../config/db');
 const { verifyToken, requireRole } = require('../middleware/auth');
+const { hashPassword, comparePassword } = require('../utils/password');
 
 const router = express.Router();
 router.use(verifyToken, requireRole('medecin'));
+
+// GET /api/doctor/profile
+router.get('/profile', (req, res) => {
+  const profile = db
+    .prepare(
+      `SELECT dp.id as doctor_id, u.name, u.email, dp.specialty, dp.phone
+       FROM doctor_profiles dp JOIN users u ON u.id = dp.user_id
+       WHERE dp.id = ?`
+    )
+    .get(req.user.profileId);
+
+  if (!profile) return res.status(404).json({ error: 'Profil introuvable.' });
+  res.json(profile);
+});
+
+// PUT /api/doctor/profile
+// Modifie uniquement les informations personnelles du medecin.
+router.put('/profile', (req, res) => {
+  const { name, email, specialty, phone } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).json({ error: 'Le nom et l\'email sont requis.' });
+  }
+
+  const duplicateEmail = db
+    .prepare('SELECT id FROM users WHERE email = ? AND id != ?')
+    .get(email, req.user.id);
+  if (duplicateEmail) {
+    return res.status(409).json({ error: 'Un compte existe deja avec cet email.' });
+  }
+
+  const updateProfile = db.transaction(() => {
+    db.prepare('UPDATE users SET name = ?, email = ? WHERE id = ?').run(name, email, req.user.id);
+    db
+      .prepare('UPDATE doctor_profiles SET specialty = ?, phone = ? WHERE id = ?')
+      .run(specialty || null, phone || null, req.user.profileId);
+  });
+
+  try {
+    updateProfile();
+  } catch (err) {
+    return res.status(400).json({ error: 'Impossible de mettre a jour le profil.' });
+  }
+
+  const updatedProfile = db
+    .prepare(
+      `SELECT dp.id as doctor_id, u.name, u.email, dp.specialty, dp.phone
+       FROM doctor_profiles dp JOIN users u ON u.id = dp.user_id
+       WHERE dp.id = ?`
+    )
+    .get(req.user.profileId);
+
+  res.json(updatedProfile);
+});
+
+// PUT /api/doctor/password
+router.put('/password', (req, res) => {
+  const { currentPassword, newPassword, confirmPassword } = req.body;
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    return res.status(400).json({ error: 'Tous les champs du mot de passe sont requis.' });
+  }
+  if (newPassword.length < 6) {
+    return res.status(400).json({ error: 'Le nouveau mot de passe doit contenir au moins 6 caracteres.' });
+  }
+  if (newPassword !== confirmPassword) {
+    return res.status(400).json({ error: 'Les nouveaux mots de passe ne correspondent pas.' });
+  }
+
+  const user = db.prepare('SELECT password FROM users WHERE id = ?').get(req.user.id);
+  if (!user || !comparePassword(currentPassword, user.password)) {
+    return res.status(401).json({ error: 'Le mot de passe actuel est incorrect.' });
+  }
+
+  db.prepare('UPDATE users SET password = ? WHERE id = ?').run(hashPassword(newPassword), req.user.id);
+  res.json({ message: 'Mot de passe modifie avec succes.' });
+});
 
 // GET /api/doctor/patients
 // Liste des patients assignes a ce medecin seulement.

@@ -68,6 +68,39 @@ header.topbar .user-info {
 
 .card h2, .card h3 { margin-top: 0; }
 
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.section-header h2 { margin-bottom: 0; }
+
+.profile-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.profile-summary p { margin: 10px 0; color: var(--muted); }
+
+.profile-summary strong { color: var(--text); }
+
+.optional-label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.form-actions .btn { flex: 1; }
+
 .auth-card {
   width: 100%;
   max-width: 420px;
@@ -225,6 +258,10 @@ tr:hover { background: #fafbfd; }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+}
+
+.profile-form button.btn {
+  max-width: 280px;
 }
 
 @media (max-width: 720px) {

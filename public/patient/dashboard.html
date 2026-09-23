@@ -18,8 +18,69 @@
 
 <div class="container">
   <div class="card">
-    <h2>Mon profil</h2>
-    <p id="profileDetails" style="color:#64748b;">Chargement...</p>
+    <div class="section-header">
+      <h2>Mon profil</h2>
+      <div class="profile-actions">
+        <button id="editProfileButton" type="button" class="btn btn-secondary btn-small">Modifier</button>
+      </div>
+    </div>
+    <div id="profileSummary" class="profile-summary">
+      <p><strong>Nom complet:</strong> <span id="profileSummaryName">Chargement...</span></p>
+      <p><strong>Email:</strong> <span id="profileSummaryEmail">-</span></p>
+      <p><strong>Date de naissance:</strong> <span id="profileSummaryBirthDate">-</span></p>
+      <p><strong>Genre:</strong> <span id="profileSummaryGender">-</span></p>
+      <p><strong>Téléphone:</strong> <span id="profileSummaryPhone">-</span></p>
+      <p><strong>Groupe sanguin:</strong> <span id="profileSummaryBloodType">-</span></p>
+      <p><strong>Adresse:</strong> <span id="profileSummaryAddress">-</span></p>
+    </div>
+    <form id="profileForm" class="profile-form hidden">
+      <div class="grid-2">
+        <div>
+          <label for="profileName">Nom complet</label>
+          <input id="profileName" type="text" required>
+        </div>
+        <div>
+          <label for="profileEmail">Email</label>
+          <input id="profileEmail" type="email" required>
+        </div>
+        <div>
+          <label for="profileBirthDate">Date de naissance</label>
+          <input id="profileBirthDate" type="date">
+        </div>
+        <div>
+          <label for="profileGender">Genre</label>
+          <select id="profileGender">
+            <option value="">Non précisé</option>
+            <option value="Homme">Homme</option>
+            <option value="Femme">Femme</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        <div>
+          <label for="profilePhone">Téléphone</label>
+          <input id="profilePhone" type="tel">
+        </div>
+        <div>
+          <label for="profileBloodType">Groupe sanguin</label>
+          <input id="profileBloodType" type="text">
+        </div>
+      </div>
+      <label for="profileAddress">Adresse</label>
+      <textarea id="profileAddress"></textarea>
+      <h3>Changer le mot de passe <span class="optional-label">(facultatif)</span></h3>
+      <label for="currentPassword">Mot de passe actuel</label>
+      <input id="currentPassword" type="password" autocomplete="current-password">
+      <label for="newPassword">Nouveau mot de passe</label>
+      <input id="newPassword" type="password" minlength="6" autocomplete="new-password">
+      <label for="confirmPassword">Confirmer le nouveau mot de passe</label>
+      <input id="confirmPassword" type="password" minlength="6" autocomplete="new-password">
+      <p id="profileMessage" class="success-msg" role="status"></p>
+      <p id="profileError" class="error-msg" role="alert"></p>
+      <div class="form-actions">
+        <button type="submit" class="btn">Enregistrer mes informations</button>
+        <button id="cancelProfileButton" type="button" class="btn btn-secondary">Annuler</button>
+      </div>
+    </form>
   </div>
 
   <div class="card">
