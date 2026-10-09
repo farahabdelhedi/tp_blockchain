@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MedicalRecord - Blockchain</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        h1 {
+            color: #222;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        input {
+            padding: 10px;
+            width: 90%;
+            margin: 5px 0;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .info {
+            color: #333;
+        }
+
+        code {
+            word-break: break-all;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>MedicalRecord - Blockchain</h1>
+
+    <!-- Connexion MetaMask -->
+    <div class="card">
+
+        <h2>1. Connexion MetaMask</h2>
+
+        <button id="connectButton">
+            Connecter MetaMask
+        </button>
+
+        <p>
+            <strong>Compte :</strong>
+            <span id="account">Non connecté</span>
+        </p>
+
+        <p>
+            <strong>Réseau :</strong>
+            <span id="network">Non identifié</span>
+        </p>
+
+    </div>
+
+
+    <!-- Smart Contract -->
+    <div class="card">
+
+        <h2>2. Smart Contract</h2>
+
+        <p>
+            <strong>Adresse du contrat :</strong>
+        </p>
+
+        <code>
+            0x5FbDB2315678afecb367f032d93F642f64180aa3
+        </code>
+
+        <p id="contractStatus">
+            Contrat non connecté
+        </p>
+
+    </div>
+
+
+    <!-- Enregistrer hash -->
+    <div class="card">
+
+        <h2>3. Enregistrer un hash</h2>
+
+        <input
+            type="text"
+            id="patientId"
+            placeholder="Identifiant du patient"
+        >
+
+        <input
+            type="text"
+            id="data"
+            placeholder="Données du dossier médical"
+        >
+
+        <br>
+
+        <button id="storeButton">
+            Enregistrer le hash
+        </button>
+
+        <p id="storeResult"></p>
+
+    </div>
+
+
+    <!-- Lire dernier hash -->
+    <div class="card">
+
+        <h2>4. Lire le dernier hash</h2>
+
+        <input
+            type="text"
+            id="readPatientId"
+            placeholder="Identifiant du patient"
+        >
+
+        <br>
+
+        <button id="readButton">
+            Lire le dernier hash
+        </button>
+
+        <p id="latestHash"></p>
+
+    </div>
+
+
+    <!-- Vérification -->
+    <div class="card">
+
+        <h2>5. Vérifier l'intégrité</h2>
+
+        <input
+            type="text"
+            id="verifyPatientId"
+            placeholder="Identifiant du patient"
+        >
+
+        <input
+            type="text"
+            id="verifyData"
+            placeholder="Données actuelles du dossier"
+        >
+
+        <br>
+
+        <button id="verifyButton">
+            Vérifier l'intégrité
+        </button>
+
+        <p id="verifyResult"></p>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+
+    <script src="app.js"></script>
+
+</body>
+</html>

@@ -1,10 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dossier patient</title>
-<link rel="stylesheet" href="../css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dossier patient</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
@@ -12,16 +14,21 @@
   <div class="brand">🩺 Espace Médecin</div>
   <div class="user-info">
     <span id="doctorName"></span>
-    <button class="btn btn-secondary btn-small" onclick="logout()">Déconnexion</button>
+    <button class="btn btn-secondary btn-small" onclick="logout()">
+      Déconnexion
+    </button>
   </div>
 </header>
 
 <div class="container">
-  <button class="link-btn" onclick="window.location.href='dashboard.html'">← Retour à la liste des patients</button>
+  <button class="link-btn"
+    onclick="window.location.href='dashboard.html'">
+    ← Retour à la liste des patients
+  </button>
 
   <div class="card" id="patientInfoCard">
     <h2 id="patientName">Chargement...</h2>
-    <p id="patientDetails" style="color:#64748b; font-size:14px;"></p>
+    <p id="patientDetails" style="color:#64748b;font-size:14px;"></p>
   </div>
 
   <div class="grid-2">
@@ -29,10 +36,16 @@
       <h3>➕ Nouvelle consultation</h3>
       <form id="consultationForm">
         <label>Motif</label>
-        <input type="text" id="reason" placeholder="Ex: Douleur abdominale" required>
+        <input type="text" id="reason"
+          placeholder="Ex: Douleur abdominale" required>
+
         <label>Notes</label>
-        <textarea id="notes" placeholder="Observations, examen clinique..."></textarea>
-        <button type="submit" class="btn">Ajouter la consultation</button>
+        <textarea id="notes"
+          placeholder="Observations, examen clinique..."></textarea>
+
+        <button type="submit" class="btn">
+          Ajouter la consultation
+        </button>
         <div class="error-msg" id="consultationError"></div>
       </form>
     </div>
@@ -45,8 +58,11 @@
       <div style="margin-top:16px;">
         <strong>Diagnostic</strong>
         <form id="diagnosticForm">
-          <textarea id="diagnosticDescription" placeholder="Description du diagnostic" required></textarea>
-          <button type="submit" class="btn">Ajouter le diagnostic</button>
+          <textarea id="diagnosticDescription"
+            placeholder="Description du diagnostic" required></textarea>
+          <button type="submit" class="btn">
+            Ajouter le diagnostic
+          </button>
         </form>
       </div>
 
@@ -54,16 +70,27 @@
         <strong>Prescription</strong>
         <form id="prescriptionForm">
           <label>Médicament</label>
-          <input type="text" id="medication" required placeholder="Ex: Paracétamol">
+          <input type="text" id="medication"
+            required placeholder="Ex: Paracétamol">
+
           <label>Dosage</label>
-          <input type="text" id="dosage" placeholder="Ex: 500mg, 3x/jour">
+          <input type="text" id="dosage"
+            placeholder="Ex: 500mg, 3x/jour">
+
           <label>Durée</label>
-          <input type="text" id="duration" placeholder="Ex: 5 jours">
+          <input type="text" id="duration"
+            placeholder="Ex: 5 jours">
+
           <label>Instructions</label>
-          <textarea id="instructions" placeholder="Instructions complementaires"></textarea>
-          <button type="submit" class="btn">Ajouter la prescription</button>
+          <textarea id="instructions"
+            placeholder="Instructions complémentaires"></textarea>
+
+          <button type="submit" class="btn">
+            Ajouter la prescription
+          </button>
         </form>
       </div>
+
       <div class="error-msg" id="subFormError"></div>
     </div>
   </div>
@@ -72,9 +99,121 @@
     <h3>📋 Historique médical</h3>
     <div id="historyContainer"></div>
   </div>
+
+  <div class="card" id="dossierHashCard">
+    <h3>🔐 Empreinte cryptographique du dossier (Partie 4)</h3>
+    <p>
+      L'empreinte Keccak-256 est calculée dans le navigateur à partir
+      de la représentation JSON canonique du dossier.
+    </p>
+
+    <p id="dossierHashStatus" role="status" aria-live="polite">
+      Calcul de l'empreinte en cours...
+    </p>
+
+    <p><strong>Empreinte actuelle du dossier (bytes32) :</strong></p>
+    <div style="display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;">
+      <code id="calculatedHash"
+        style="display:block;flex:1;min-width:240px;overflow-wrap:anywhere;">—</code>
+      <button type="button" class="btn btn-secondary" id="copyDossierHashBtn">
+        Copier
+      </button>
+    </div>
+
+    <p><strong>Algorithme :</strong> Keccak-256 (standard EVM)</p>
+    <p><strong>Éléments inclus :</strong> <span id="dossierHashCounts">—</span></p>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
+      <button type="button" class="btn" id="recalculateDossierHashBtn">
+        Recalculer l'empreinte
+      </button>
+      <button type="button" class="btn btn-secondary"
+        id="verifyDossierHashBtn" disabled>
+        Vérifier l'intégrité sur la blockchain
+      </button>
+      <button type="button" class="btn btn-secondary" id="toggleDossierJsonBtn">
+        Afficher le JSON canonique
+      </button>
+    </div>
+
+    <pre id="canonicalDossierJson" hidden
+      style="max-height:300px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;background:#0f172a;color:#e2e8f0;padding:16px;border-radius:8px;"></pre>
+  </div>
+
+  <!-- Intégration blockchain -->
+  <div class="card" id="blockchainCard">
+    <h3>🔐 Intégrité du dossier médical — Blockchain</h3>
+
+    <p>
+      Connectez MetaMask pour enregistrer et vérifier
+      l'empreinte cryptographique du dossier médical.
+    </p>
+
+    <p id="blockchainConnectionStatus">
+      MetaMask n'est pas encore connecté.
+    </p>
+
+    <button type="button" class="btn" id="connectWalletBtn">
+      Connecter MetaMask
+    </button>
+
+    <hr>
+
+    <h4>Informations de connexion</h4>
+    <p><strong>Adresse du compte :</strong></p>
+    <p id="walletAddress" style="overflow-wrap:anywhere;">—</p>
+
+    <p><strong>Réseau :</strong> <span id="networkName">—</span></p>
+    <p><strong>Chain ID :</strong> <span id="chainId">—</span></p>
+
+    <hr>
+
+    <h4>Informations du dossier sur la blockchain</h4>
+
+    <p><strong>Identifiant du patient :</strong>
+      <span id="blockchainPatientId">—</span>
+    </p>
+
+    <p><strong>Nombre de versions :</strong>
+      <span id="versionCount">—</span>
+    </p>
+
+    <p><strong>Dernier hash enregistré :</strong></p>
+    <p id="latestHash" style="overflow-wrap:anywhere;">—</p>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
+      <button type="button" class="btn"
+        id="loadBlockchainDataBtn" disabled>
+        Charger les informations blockchain
+      </button>
+
+      <button type="button" class="btn"
+        id="storeHashBtn" disabled>
+        Enregistrer le dossier sur la blockchain
+      </button>
+
+      <button type="button" class="btn btn-secondary"
+        id="verifyHashBtn" disabled>
+        Vérifier l'intégrité
+      </button>
+    </div>
+
+    <div id="storeHashStatus" role="status" aria-live="polite"
+      style="margin-top:14px;padding:12px;border-radius:8px;background:#f1f5f9;color:#334155;">
+      Prêt : connectez MetaMask pour enregistrer l'empreinte du dossier.
+    </div>
+    <p id="storeHashTransaction" style="overflow-wrap:anywhere;"></p>
+
+    <p id="blockchainResult" role="status"
+      aria-live="polite" style="overflow-wrap:anywhere;"></p>
+  </div>
 </div>
 
+<!-- Les dépendances sont chargées avant le code qui les utilise -->
 <script src="../js/api.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.5/ethers.umd.min.js"></script>
 <script src="js/patient.js"></script>
+<script src="js/blockchain.js"></script>
+
 </body>
 </html>
